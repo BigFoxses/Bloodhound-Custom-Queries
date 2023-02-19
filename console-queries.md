@@ -74,7 +74,7 @@ MATCH (o:OU)-[:Contains]->(c:Computer) WHERE toUpper(c.operatingsystem) STARTS W
 
 ## Find computers that allow unconstrained delegation that AREN’T domain controllers. (In Console)             
  
-MATCH (c1:Computer)-[:MemberOf*1..]->(g:Group) WHERE g.object ENDS WITH '-516' WITH COLLECT(c1.name) AS domainControllers MATCH (c2:Computer {unconstraineddelegation:true}) WHERE NOT c2.name IN domainControllers RETURN c2.name,c2.operatingsystem ORDER BY c2.name ASC
+MATCH (c1:Computer)-[:MemberOf*1..]->(g:Group) WHERE g.objectid ENDS WITH '-516' WITH COLLECT(c1.name) AS domainControllers MATCH (c2:Computer {unconstraineddelegation:true}) WHERE NOT c2.name IN domainControllers RETURN c2.name,c2.operatingsystem ORDER BY c2.name ASC
 
 ## Find the number of principals with control of a “high value” asset where the principal itself does not belong to a “high value” group             
 
