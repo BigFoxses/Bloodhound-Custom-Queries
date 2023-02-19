@@ -16,7 +16,7 @@ MATCH p=(m:Group)-[r:AdminTo]->(n:Computer) RETURN m.name, n.name ORDER BY m.nam
 
 MATCH p=(m:User)-[r:AdminTo]->(n:Computer) RETURN m.name, n.name ORDER BY m.name
 
-## List the groups of all owned users           
+## List the groups of all owned users     
 
 MATCH (m:User) WHERE m.owned=TRUE WITH m MATCH p=(m)-[:MemberOf*1..]->(n:Group) RETURN m.name, n.name ORDER BY m.name
 
@@ -74,7 +74,7 @@ MATCH (o:OU)-[:Contains]->(c:Computer) WHERE toUpper(c.operatingsystem) STARTS W
 
 ## Find computers that allow unconstrained delegation that AREN’T domain controllers. (In Console)             
  
-MATCH (c1:Computer)-[:MemberOf*1..]->(g:Group) WHERE g.objectsid ENDS WITH '-516' WITH COLLECT(c1.name) AS domainControllers MATCH (c2:Computer {unconstraineddelegation:true}) WHERE NOT c2.name IN domainControllers RETURN c2.name,c2.operatingsystem ORDER BY c2.name ASC
+MATCH (c1:Computer)-[:MemberOf*1..]->(g:Group) WHERE g.object ENDS WITH '-516' WITH COLLECT(c1.name) AS domainControllers MATCH (c2:Computer {unconstraineddelegation:true}) WHERE NOT c2.name IN domainControllers RETURN c2.name,c2.operatingsystem ORDER BY c2.name ASC
 
 ## Find the number of principals with control of a “high value” asset where the principal itself does not belong to a “high value” group             
 
@@ -92,7 +92,7 @@ MATCH (u:User)-[:GenericAll]->(c:Computer) WHERE  NOT u.admincount AND NOT (u)-[
 
 ## What permissions does Everyone/Authenticated users/Domain users/Domain computers have
 
-MATCH p=(m:Group)-[r:AddMember|AdminTo|AllExtendedRights|AllowedToDelegate|CanRDP|Contains|ExecuteDCOM|ForceChangePassword|GenericAll|GenericWrite|GetChanges|GetChangesAll|HasSession|Owns|ReadLAPSPassword|SQLAdmin|TrustedBy|WriteDACL|WriteOwner|AddAllowedToAct|AllowedToAct]->(t) WHERE m.objectsid ENDS WITH '-513' OR m.objectsid ENDS WITH '-515' OR m.objectsid ENDS WITH 'S-1-5-11' OR m.objectsid ENDS WITH 'S-1-1-0' RETURN m.name,TYPE(r),t.name,t.enabled
+MATCH p=(m:Group)-[r:AddMember|AdminTo|AllExtendedRights|AllowedToDelegate|CanRDP|Contains|ExecuteDCOM|ForceChangePassword|GenericAll|GenericWrite|GetChanges|GetChangesAll|HasSession|Owns|ReadLAPSPassword|SQLAdmin|TrustedBy|WriteDACL|WriteOwner|AddAllowedToAct|AllowedToAct]->(t) WHERE m.object ENDS WITH '-513' OR m.objectid ENDS WITH '-515' OR m.objectid ENDS WITH 'S-1-5-11' OR m.objectid ENDS WITH 'S-1-1-0' RETURN m.name,TYPE(r),t.name,t.enabled
 
 ## Find computers with descriptions and display them (along with the description, sometimes admins save sensitive data on domain objects descriptions like passwords):      
 
